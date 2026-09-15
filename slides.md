@@ -401,7 +401,7 @@ Code, data & analysis scripts:<br>
 </div>
 
 <div class="mt-4 text-sm opacity-70">
-Supported by the Italian Science Fund (FIS3) project <i>FoMaSE</i> — <a href="https://fis3-fomase.github.io/">fis3-fomase.github.io</a>
+Supported by the Italian Science Fund (FIS3) project <b>FoMaSE (Foundations for Macro-programming-based Software Engineerting)</b> — <a href="https://fis3-fomase.github.io/">fis3-fomase.github.io</a>
 </div>
 
 <div class="mt-8 opacity-50 text-sm">Questions?</div>
