@@ -112,7 +112,7 @@ function edgeClass(e: Edge) {
 </template>
 
 <style scoped>
-.event-structure { width: 100%; height: auto; overflow: visible; }
+.event-structure { display: block; width: auto; height: 175px; max-width: 100%; margin: 0 auto; overflow: visible; }
 .devlabel { font-size: 13px; fill: #6b7280; }
 .axislabel { font-size: 12px; fill: #6b7280; }
 .node {
