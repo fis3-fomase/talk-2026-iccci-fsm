@@ -16,3 +16,8 @@
 a {
   color: #a00;
 }
+
+.slidev-layout h1 + p {
+  color: #a00;
+  opacity: 1;
+}

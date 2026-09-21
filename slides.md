@@ -50,16 +50,17 @@ layout: center
 
 <!-- <v-clicks> -->
 
-- Project **FoMaSE -- Foundations for Macro-programming-based Software Engineering**
-  - FIS3 Starting Grant (Italian Science Fund) — PI **Roberto Casadei** (UNIBO), **1.1M€**, **2026–2031**
-  <!-- - Team: 1 Associate Prof., 4 post-docs, 2 PhDs
-  - Investigates the **micro–macro link** in **artificial collective intelligence**: how to engineer collective behaviour at the **macro level**
-  - Aims at **principled, predictable software engineering** for autonomous collectives (robot swarms, sensor networks, smart-city services, …)
-  -->
-  - Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)<CiteInSlide id="DBLP:journals/csur/Casadei23" />
-    - as a way to build **artificial collective intelligence**<CiteInSlide id="DBLP:journals/alife/Casadei23" />
-    <!-- - and implications in software engineering / AI -->
-  - **<https://fis3-fomase.github.io>**
+Project **FoMaSE -- Foundations for Macro-programming-based Software Engineering**
+
+- FIS3 Starting Grant (Italian Science Fund) — PI **Roberto Casadei** (UNIBO), **1.1M€**, **2026–2031**
+<!-- - Team: 1 Associate Prof., 4 post-docs, 2 PhDs
+- Investigates the **micro–macro link** in **artificial collective intelligence**: how to engineer collective behaviour at the **macro level**
+- Aims at **principled, predictable software engineering** for autonomous collectives (robot swarms, sensor networks, smart-city services, …)
+-->
+- Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)<CiteInSlide id="DBLP:journals/csur/Casadei23" />
+  - as a way to build **artificial collective intelligence**<CiteInSlide id="DBLP:journals/alife/Casadei23" />
+  <!-- - and implications in software engineering / AI -->
+- **<https://fis3-fomase.github.io>**
 
 <center>
 <img src="/imgs/fomase.png" class="mx-auto" style="height:225px" />
@@ -131,10 +132,20 @@ layout: default
 
 <!-- Groups of situated agents (robot swarms, sensor networks) that must **solve problems together**, sensing and acting **locally** only -->
 
-<div class="text-sm leading-tight">
 
 * Positioning: programming language (PL) approaches to artificial collective intelligence (ACI)
 * Focus/goal: design and implement collective behaviour *at macro-level*
+
+
+
+
+
+
+<div class="mt-4 p-3 rounded bg-amber-500/10 border border-amber-500/30 text-sm">
+
+<div class="grid grid-cols-2 gap-0 items-center">
+<div>
+
 * Case study: a **swarm** has to
     * stay **idle** at the base
     * when **alarm** event $\to$ **search-and-rescue** 
@@ -143,10 +154,16 @@ layout: default
 </div>
 
 
-
-<div style="height: 250px; display: flex; justify-content: center; overflow: hidden;">
-<CaseStudyScene style="height: 100%; width: auto;" />
+<div style="width: 80%; display: flex; justify-content: center;">
+<CaseStudyScene style="width: 100%;" />
 </div>
+
+</div>
+
+
+
+</div>
+
 
 <!--
 
@@ -253,11 +270,10 @@ layout: default
 
 A cFSM is a tuple $\mathcal{M} = (Pr, S, (pr^\star, s^\star), P)$:
 
-<v-clicks>
 
-- $Pr$: totally ordered **priorities**
-- $S$: totally ordered set of **collective states** (e.g. `Wander`, `Solve`, …)
-- $(pr^\star, s^\star)$: the **initial** prioritised state
+<v-clicks style="font-size: 80%;">
+
+- $Pr$: totally ordered **priorities**; $S$: totally ordered set of **collective states** (e.g. `Wander`, `Solve`, …); $(pr^\star, s^\star)$: the **initial** prioritised state
 - $P : S \to \mathbf{P}$: each state runs a **collective program**
     - on every event, the program produces a new *prioritised state* $(pr', s') \in Pr \times S$
 
@@ -265,17 +281,45 @@ A cFSM is a tuple $\mathcal{M} = (Pr, S, (pr^\star, s^\star), P)$:
 
 <v-click>
 
-<div class="mt-6 p-3 rounded bg-blue-500/10 border border-blue-500/30">
+<div class="mt-4 p-3 rounded bg-amber-500/10 border border-amber-500/30 text-sm">
+
+<div class="grid grid-cols-2 gap-4 items-center">
+<div>
+
+<b>Running example</b> — search &amp; rescue swarm: 
+
+$Pr = \mathbb{R}_\infty$ , $S = \{$<code>Wait</code>, <code>Wander</code>, <code>Solve</code>, <code>Defend</code>$\}$
+
+ with <code>Wait</code> &lt; <code>Wander</code> &lt; <code>Solve</code> &lt; <code>Defend</code>, and $(pr^\star,s^\star) = (-\infty, \texttt{Wait})$
+
+
+</div>
+<CfsmDiagram style="height:98%;" />
+</div>
+
+
+
+</div>
+
+</v-click>
+
+<!--
+<v-click>
+
+
+<div class="mt-3 p-3 rounded bg-blue-500/10 border border-blue-500/30">
 Unlike a classic FSM: the whole network must <b>collectively decide</b> which proposed transition wins — this is what priorities are for.
 </div>
 
 </v-click>
 
+-->
+
 ---
 layout: default
 ---
 
-# Reaching agreement — Histories
+# Reaching agreement -- Histories
 
 A single "current state" per device isn't enough to guarantee convergence: we compare whole **histories**.
 
@@ -289,11 +333,24 @@ $$h = [(pr_1,s_1), \dots, (pr_N, s_N)]$$
 ⇒ self-loops don't make histories grow — length only grows with <i>actual</i> state changes.
 </div>
 
+<v-click>
+
+<div class="mt-4 p-3 rounded bg-amber-500/10 border border-amber-500/30 text-sm">
+
+Drone <b>R</b> goes <code>Wait</code> $\to$ <code>Wander</code> (pr 10) $\to$ <code>Solve</code> (pr 100) $\to$ <code>Wait</code> (pr 10):
+
+$$h = [(-\infty,\texttt{Wait}),\ (10,\texttt{Wander}),\ (100,\texttt{Solve}),\ (10,\texttt{Wait})]$$
+
+(any self-loops while wandering/solving are absorbed, not shown)
+</div>
+
+</v-click>
+
 ---
 layout: default
 ---
 
-# Reaching agreement — Ordering & execution
+# Reaching agreement -- Ordering & execution
 
 Histories are compared **lexicographically**, by (priority, state) pairs: $h <_H h'$.
 
@@ -309,7 +366,19 @@ At every event $\epsilon$, a device computes:
 
 <v-click>
 
-<div class="mt-6 p-3 rounded bg-green-500/10 border border-green-500/30">
+<div class="mt-4 p-3 rounded bg-amber-500/10 border border-amber-500/30 text-sm">
+
+- Recall: $h = [(-\infty,\texttt{Wait}),\ (10,\texttt{Wander}),\ (100,\texttt{Solve}),\ (10,\texttt{Wait})]$
+- Suppose neighbour <b>R′</b> spots a base attack and proposes $h' = [(-\infty,\texttt{Wait}), (10,\texttt{Wander}), (\infty,\texttt{Defend})]$
+- Since $h' >_H h$ (R's history from before), R adopts $h'$ too — switching to <code>Defend</code>.
+
+</div>
+
+</v-click>
+
+<v-click>
+
+<div class="mt-3 p-3 rounded bg-green-500/10 border border-green-500/30">
 ✅ Always propagating the <b>max</b> history means: the highest-priority transition anyone proposes eventually reaches — and is adopted by — the whole network. This is the core convergence mechanism.
 </div>
 
@@ -319,7 +388,7 @@ At every event $\epsilon$, a device computes:
 layout: default
 ---
 
-# Keeping it practical — Compacted histories
+# Keeping it practical -- Compacted histories
 
 Unbounded histories don't scale. Old, already-agreed-upon entries can be safely **forgotten**.
 
@@ -365,15 +434,22 @@ A swarm of drones patrols a base, searching for a target when an alarm is raised
 <CfsmDiagram />
 </div>
 
+
+<div class="mt-6 p-3 rounded bg-green-500/10 border border-green-500/30">
+Code, data & analysis scripts: <a href="https://github.com/cric96/experiments-2025-collective-state-machines">github.com/cric96/experiments-2025-collective-state-machines</a>
+</div>
+
 ---
 layout: default
 ---
 
 # Case study — ScaFi implementation
 
-The `cfsm` combinator gives a reusable FSM-like structure: state ↦ (movement logic, transition rule). Built on **ScaFi**<CiteInSlide id="DBLP:journals/softx/CasadeiVAP22" /> and **MacroSwarm**<CiteInSlide id="DBLP:journals/lmcs/AguzziCV25" />.
+The `cfsm` combinator gives a reusable FSM-like structure: state ↦ (movement logic, transition rule)
 
-```scala {2-8|10-15}
+- Built on **ScaFi**<CiteInSlide id="DBLP:journals/softx/CasadeiVAP22" /> and **MacroSwarm**<CiteInSlide id="DBLP:journals/lmcs/AguzziCV25" />.
+
+```scala {3-8|6,12-15}
 protected def movementLogic(): Point3D = {
   val basePos = getBasePosition()
   val result = cfsm[MovementState](Wait()) {
@@ -391,7 +467,7 @@ private def handleDefend(base: Point3D): Next[MovementState] =
   else { Defend().updateVelocity(goto(base)) } // self-loop
 ```
 
-<div class="text-sm opacity-70 mt-1">Drone movement (via <b>MacroSwarm</b>) and target detection (via <b>gradients</b>) plug into the same collective program.</div>
+<!-- <div class="text-sm opacity-70 mt-1">Drone movement (via <b>MacroSwarm</b>) and target detection (via <b>gradients</b>) plug into the same collective program.</div> -->
 
 ---
 layout: default
@@ -438,7 +514,12 @@ layout: default
 </div>
 </div>
 
-<div class="mt-4 text-sm opacity-70">3 alarms (t=1100,2300,3500s) + 1 base attack (t=2400s, deliberately overlapping the 2nd mission) to stress-test priority-based conflict resolution.</div>
+
+**Scenario dynamics**
+
+<!-- <div class="mt-4 text-sm opacity-70"> --> 
+
+- 3 alarms (t=1100,2300,3500s) + 1 base attack (t=2400s, deliberately overlapping the 2nd mission) to stress-test priority-based conflict resolution
 
 ---
 layout: default
@@ -505,17 +586,15 @@ layout: default
 
 # Conclusion
 
-<v-clicks>
-
 - **cFSM**: a collective FSM meta-model — collective states + priority-based agreement on transitions
 - formalised over **augmented event structures**, implemented as a reusable layer on **ScaFi** aggregate programs
 - swarm case study: **correct**, **resilient** to asynchrony/conflicts, and **history-independent** in practice (bounded memory)
 
-</v-clicks>
 
 <v-click>
 
 ### Future work
+
 - **parametric** states (carrying data, not just labels)
 - a catalogue of **priority-assignment patterns** (leader-based, timestamp-based, context/consensus-based)
 - integrating the **concurrency** dimension via aggregate processes
