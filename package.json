@@ -3,6 +3,10 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "citations": "node scripts/gen-citations.mjs",
+    "predev": "npm run citations",
+    "prebuild": "npm run citations",
+    "preexport": "npm run citations",
     "build": "slidev build",
     "dev": "slidev --open",
     "export": "slidev export"

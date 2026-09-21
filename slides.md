@@ -56,7 +56,7 @@ layout: center
   - Investigates the **micro–macro link** in **artificial collective intelligence**: how to engineer collective behaviour at the **macro level**
   - Aims at **principled, predictable software engineering** for autonomous collectives (robot swarms, sensor networks, smart-city services, …)
   -->
-  - Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)
+  - Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)<CiteInSlide id="DBLP:journals/csur/Casadei23" />
     - as a way to build **artificial collective intelligence** 
     - and implications in software engineering / AI
   - **<https://fis3-fomase.github.io>**
@@ -124,9 +124,13 @@ layout: default
 
 </div>
 
+
+
 <div style="height: 250px; display: flex; justify-content: center; overflow: hidden;">
 <CaseStudyScene style="height: 100%; width: auto;" />
 </div>
+
+<!--
 
 <div class="text-sm">
 <v-clicks>
@@ -146,46 +150,65 @@ layout: default
 
 </v-click>
 
+-->
+
 ---
 layout: default
 ---
 
-# Background — Aggregate Computing
+# Background -- Aggregate Computing (AC)
 
-A macro-programming paradigm: **one program**, executed by every device, computing over **fields** (device → value).
+AC is a **functional** macro-programming paradigm composing functions computing **fields** (device $\to$ value)<Cite id="DBLP:journals/computer/BealPV15" />
+
+<div class="visual-box visual-box-wide" style="margin: 0 auto 0.2rem;">
+  <AggregateFlow />
+</div>
 
 <div class="grid grid-cols-2 gap-6 mt-4">
 <div>
 
-Each device repeats a **sense–compute–interact** round:
+Each device runs **sense-compute-interact** rounds:
 
-1. **Sense**: read sensors + neighbours' last messages
+<v-clicks>
+
+1. **Sense**: read sensors + non-expired msgs from neighbours
 2. **Compute**: evaluate the (same) aggregate program
-3. **Interact**: broadcast the result, act on it
+3. **Interact**: send the result to neighbours &amp; act on it
+
+</v-clicks>
 
 </div>
 <div>
 
-Rounds are **asynchronous** and unsynchronised — the language is designed to self-stabilise despite:
+  <LocalRoundLoop :click="$clicks" />
+
+</div>
+</div>
+
+
+<!--
+
+Rounds are **asynchronous** and unsynchronised -- the language is designed to self-stabilise despite:
 
 - message loss
+- device loss
 - topology/network changes
-- device churn
 
-</div>
-</div>
+-->
 
+<!--
 <div class="mt-4 text-sm opacity-70">
 Implemented here in <b>ScaFi</b>, a Scala-internal DSL for aggregate/field computing.
 </div>
+-->
 
 ---
 layout: default
 ---
 
-# Background — Event structures
+# Background -- Event structures
 
-The execution of an aggregate system can be modelled, in general, as an **augmented event structure**:
+The execution of an aggregate system can be modelled, in general, as an **augmented event structure**:<Cite id="Audrito2024fgcs-processes" />
 
 $$
 \mathbf{E} = \langle E, \leadsto, d, s \rangle
@@ -193,7 +216,7 @@ $$
 
 <div class="text-sm opacity-80 -mt-1">
 
-$E$: events (sense-compute-interact rounds) &nbsp;·&nbsp; $\leadsto$: messaging relation &nbsp;·&nbsp; $d$: event → device &nbsp;·&nbsp; $s$: event → status
+$E$: events (sense-compute-interact rounds) &nbsp;·&nbsp; $\leadsto$: messaging relation &nbsp;·&nbsp; $d$: event $\to$ device &nbsp;·&nbsp; $s$: event $\to$ sensor status
 
 </div>
 
@@ -202,7 +225,7 @@ $E$: events (sense-compute-interact rounds) &nbsp;·&nbsp; $\leadsto$: messaging
 
 <EventStructure class="mt-2" />
 
-<div class="text-xs text-center opacity-60 -mt-1">nodes = events of each device over time · edges = the messaging relation ⤳ · colours cycle to trace causality</div>
+<div class="text-xs text-center opacity-60 -mt-1">nodes = events of each device over time · edges = the messaging relation ⤳</div>
 
 ---
 layout: default
@@ -217,7 +240,8 @@ A cFSM is a tuple $\mathcal{M} = (Pr, S, (pr^\star, s^\star), P)$:
 - $Pr$: totally ordered **priorities**
 - $S$: totally ordered set of **collective states** (e.g. `Wander`, `Solve`, …)
 - $(pr^\star, s^\star)$: the **initial** prioritised state
-- $P : S \to \mathbf{P}$: each state runs a **collective program**, which on every event produces a new *prioritised state* $(pr', s') \in Pr \times S$
+- $P : S \to \mathbf{P}$: each state runs a **collective program**
+    - on every event, the program produces a new *prioritised state* $(pr', s') \in Pr \times S$
 
 </v-clicks>
 
@@ -329,7 +353,7 @@ layout: default
 
 # Case study — ScaFi implementation
 
-The `cfsm` combinator gives a reusable FSM-like structure: state ↦ (movement logic, transition rule).
+The `cfsm` combinator gives a reusable FSM-like structure: state ↦ (movement logic, transition rule). Built on **ScaFi**<CiteInSlide id="DBLP:journals/softx/CasadeiVAP22" /> and **MacroSwarm**<CiteInSlide id="DBLP:journals/lmcs/AguzziCV25" />.
 
 ```scala {2-8|10-15}
 protected def movementLogic(): Point3D = {
@@ -470,10 +494,13 @@ layout: default
 
 </v-click>
 
+
 ---
 layout: center
 class: text-center
 ---
+
+
 
 # Thank you!
 
@@ -483,7 +510,16 @@ Code, data & analysis scripts:<br>
 </div>
 
 <div class="mt-4 text-sm opacity-70">
-Supported by the Italian Science Fund (FIS3) project <b>FoMaSE (Foundations for Macro-programming-based Software Engineerting)</b> — <a href="https://fis3-fomase.github.io/">fis3-fomase.github.io</a>
+Supported by the Italian Science Fund (FIS3) project <b>FoMaSE (Foundations for Macro-programming-based Software Engineering)</b> -- <a href="https://fis3-fomase.github.io/">fis3-fomase.github.io</a>
 </div>
 
 <div class="mt-8 opacity-50 text-sm">Questions?</div>
+
+
+---
+layout: default
+---
+
+# References
+
+<Bibliography />

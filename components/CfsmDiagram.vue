@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+// Static reproduction of Fig. 3(a) in the paper (state machine diagram
+// for the synthetic search-and-rescue case study). No animation/highlighting:
+// all states and transitions are always shown, exactly as in the figure.
 
 const pos = {
   Wait: { x: 130, y: 230 },
@@ -8,39 +10,18 @@ const pos = {
   Defend: { x: 320, y: 390 },
 }
 
-const edges = [
-  { id: 'e1', label: 'alarm / −t', d: 'M150,205 Q320,140 490,205', lx: 320, ly: 150, kind: 'normal' },
-  { id: 'e2', label: 'found / −t', d: 'M480,205 Q420,120 345,90', lx: 452, ly: 145, kind: 'normal' },
-  { id: 'e3', label: 'solved / −t', d: 'M300,90 Q220,120 155,205', lx: 205, ly: 145, kind: 'normal' },
-  { id: 'e4', label: 'attacked / ∞', d: 'M150,255 Q220,340 300,375', lx: 165, ly: 335, kind: 'critical' },
-  { id: 'e5', label: 'attacked / ∞', d: 'M490,255 Q420,340 345,375', lx: 475, ly: 335, kind: 'critical' },
-  { id: 'e6', label: 'attacked / ∞', d: 'M320,95 L320,365', lx: 345, ly: 230, kind: 'critical' },
-  { id: 'e7', label: 'defended / −t', d: 'M295,372 Q160,320 140,260', lx: 195, ly: 350, kind: 'normal' },
+type Seg = { t: string; i?: boolean }
+const dash = ' / −'
+const inf = ' / ∞'
+
+const edges: { id: string; d: string; label: Seg[]; lx: number; ly: number; rotate: number }[] = [
+  { id: 'help', d: 'M195,230 L445,230', label: [{ t: `Help Asked${dash}` }, { t: 't', i: true }], lx: 320, ly: 208, rotate: 0 },
+  { id: 'solved-inner', d: 'M295,372 Q160,320 140,260', label: [{ t: `Solved${dash}` }, { t: 't', i: true }], lx: 250, ly: 305, rotate: -10 },
+  { id: 'solve-wait', d: 'M300,90 Q220,120 155,205', label: [{ t: `Solved${dash}` }, { t: 't', i: true }], lx: 224, ly: 128, rotate: -38 },
+  { id: 'wander-solve', d: 'M480,205 Q420,120 345,90', label: [{ t: `Found problem${dash}` }, { t: 't', i: true }], lx: 416, ly: 128, rotate: 40 },
+  { id: 'wait-defend', d: 'M150,255 Q220,340 300,375', label: [{ t: `Base Attacked${inf}` }], lx: 222, ly: 332, rotate: 39 },
+  { id: 'wander-defend', d: 'M490,255 Q420,340 345,375', label: [{ t: `Base Attacked${inf}` }], lx: 419, ly: 332, rotate: -39 },
 ]
-
-// story matching the search-and-rescue case study: alarm -> wander -> solve -> solved
-// then a second mission interrupted by a base attack (priority ∞ preempts wandering)
-const timeline: { node: keyof typeof pos; edge: string | null }[] = [
-  { node: 'Wait', edge: null },
-  { node: 'Wait', edge: 'e1' },
-  { node: 'Wander', edge: null },
-  { node: 'Wander', edge: 'e2' },
-  { node: 'Solve', edge: null },
-  { node: 'Solve', edge: 'e3' },
-  { node: 'Wait', edge: null },
-  { node: 'Wait', edge: 'e1' },
-  { node: 'Wander', edge: null },
-  { node: 'Wander', edge: 'e5' },
-  { node: 'Defend', edge: null },
-  { node: 'Defend', edge: 'e7' },
-]
-
-const step = ref(0)
-const cur = computed(() => timeline[step.value % timeline.length])
-
-let timer: ReturnType<typeof setInterval> | undefined
-onMounted(() => { timer = setInterval(() => { step.value++ }, 1100) })
-onUnmounted(() => { if (timer) clearInterval(timer) })
 </script>
 
 <template>
@@ -49,21 +30,20 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
       <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
         <path d="M0,0 L6,3 L0,6 Z" class="arrowhead" />
       </marker>
-      <marker id="arrow-crit" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
-        <path d="M0,0 L6,3 L0,6 Z" class="arrowhead-crit" />
-      </marker>
+      <filter id="nodeShadow" x="-40%" y="-40%" width="180%" height="180%">
+        <feDropShadow dx="2" dy="3" stdDeviation="1.4" flood-color="#000000" flood-opacity="0.35" />
+      </filter>
     </defs>
 
     <g v-for="e in edges" :key="e.id">
-      <path :d="e.d" fill="none"
-        :class="['edge', e.kind, { active: cur.edge === e.id }]"
-        :marker-end="e.kind === 'critical' ? 'url(#arrow-crit)' : 'url(#arrow)'" />
-      <text :x="e.lx" :y="e.ly" :class="['elabel', e.kind, { active: cur.edge === e.id }]">{{ e.label }}</text>
+      <path :d="e.d" fill="none" class="edge" marker-end="url(#arrow)" />
+      <text :x="e.lx" :y="e.ly" class="elabel" :transform="`rotate(${e.rotate} ${e.lx} ${e.ly})`">
+        <tspan v-for="(s, i) in e.label" :key="i" :font-style="s.i ? 'italic' : 'normal'">{{ s.t }}</tspan>
+      </text>
     </g>
 
     <g v-for="(p, name) in pos" :key="name">
-      <rect :x="p.x - 62" :y="p.y - 26" width="124" height="52" rx="26"
-        :class="['state', name === 'Defend' ? 'defend' : '', { active: cur.node === name }]" />
+      <rect :x="p.x - 62" :y="p.y - 26" width="124" height="52" rx="26" class="state" filter="url(#nodeShadow)" />
       <text :x="p.x" :y="p.y + 7" class="slabel">{{ name }}</text>
     </g>
   </svg>
@@ -71,24 +51,12 @@ onUnmounted(() => { if (timer) clearInterval(timer) })
 
 <style scoped>
 .cfsm { width: 100%; height: auto; overflow: visible; }
-.state {
-  fill: white; stroke: #475569; stroke-width: 2;
-  transition: fill 0.4s ease, stroke 0.4s ease, filter 0.4s ease;
-}
-.state.defend { stroke: #b91c1c; }
-.state.active { fill: #fde68a; stroke: #ca8a04; filter: drop-shadow(0 0 6px rgba(202,138,4,0.7)); }
-.state.defend.active { fill: #fecaca; stroke: #b91c1c; filter: drop-shadow(0 0 6px rgba(185,28,28,0.7)); }
-.slabel { text-anchor: middle; font-size: 22px; font-weight: 700; fill: #1e293b; font-family: sans-serif; }
 
-.edge { stroke: #94a3b8; stroke-width: 2; transition: stroke 0.4s ease, stroke-width 0.4s ease; }
-.edge.critical { stroke: #ef4444; stroke-dasharray: 6 4; }
-.edge.active { stroke: #ca8a04; stroke-width: 4; }
-.edge.critical.active { stroke: #b91c1c; stroke-width: 4; }
-.arrowhead { fill: #94a3b8; }
-.arrowhead-crit { fill: #ef4444; }
+.state { fill: white; stroke: #1a1a1a; stroke-width: 2; }
+.slabel { text-anchor: middle; font-size: 22px; font-weight: 700; fill: #1a1a1a; font-family: Arial, Helvetica, sans-serif; }
 
-.elabel { text-anchor: middle; font-size: 15px; fill: #64748b; font-family: sans-serif; transition: fill 0.4s ease, font-weight 0.4s ease; }
-.elabel.critical { fill: #dc2626; }
-.elabel.active { fill: #92400e; font-weight: 700; }
-.elabel.critical.active { fill: #7f1d1d; font-weight: 700; }
+.edge { stroke: #1a1a1a; stroke-width: 1.75; }
+.arrowhead { fill: #1a1a1a; }
+
+.elabel { text-anchor: middle; font-size: 16px; fill: #1a1a1a; font-family: 'Times New Roman', Georgia, serif; }
 </style>
