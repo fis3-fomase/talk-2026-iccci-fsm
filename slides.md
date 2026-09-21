@@ -44,7 +44,7 @@ ICCCI 2026 — Computational Collective Intelligence
 layout: center
 ---
 
-# Context — macro-programming &amp; FoMaSE project
+# Context -- macro-programming &amp; FoMaSE project
 
 <!-- This work is carried out within **FoMaSE -- Foundations for Macro-programming-based Software Engineering** -->
 
@@ -57,15 +57,23 @@ layout: center
   - Aims at **principled, predictable software engineering** for autonomous collectives (robot swarms, sensor networks, smart-city services, …)
   -->
   - Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)<CiteInSlide id="DBLP:journals/csur/Casadei23" />
-    - as a way to build **artificial collective intelligence** 
-    - and implications in software engineering / AI
+    - as a way to build **artificial collective intelligence**<CiteInSlide id="DBLP:journals/alife/Casadei23" />
+    <!-- - and implications in software engineering / AI -->
   - **<https://fis3-fomase.github.io>**
+
+<center>
+<img src="/imgs/fomase.png" class="mx-auto" style="height:225px" />
+</center>
+
+<!--
 
 <v-click>
 
 - Looking for collaborations!
 
 </v-click>
+
+-->
 
 <!-- </v-clicks> 
 
@@ -79,19 +87,27 @@ This talk presents <b>cFSM</b>, a FoMaSE contribution towards macro-programming 
 
 -->
 
+<!-- 
+
 ---
 layout: default
 ---
 
+
+
 # Contribution at a glance
 
-<Quadrants :labels="['BACKGROUND', 'EXAMPLE', 'EXPERIMENTS', 'TAKEAWAYS']">
+<Quadrants :labels="['PROPOSAL', 'EXAMPLE', 'EXPERIMENTS', 'TAKEAWAYS']">
 
 <template #top-left>
+
+- 
 
 </template>
 
 <template #top-right>
+
+- search-and-rescue swarm
 
 </template>
 
@@ -104,6 +120,8 @@ layout: default
 </template>
 
 </Quadrants>
+
+-->
 
 ---
 layout: default
@@ -332,7 +350,7 @@ Comparison pads the forgotten prefix with **wildcards** `(?,?,?)` — sequences 
 layout: default
 ---
 
-# Case study — Search & rescue swarm
+# Case study -- Search & rescue swarm
 
 A swarm of drones patrols a base, searching for a target when an alarm is raised, and defending the base if attacked.
 
@@ -430,23 +448,30 @@ layout: default
 
 <div class="text-center">
 <img src="/imgs/plots/legend_only_by_history_conn0.2_var10.png" class="mx-auto" style="height:1.3em" />
-<img src="/imgs/plots/states_plus_disagreement_plus_historysize_by_history_conn0.2_var10.png" class="mx-auto" style="height:270px" />
+</div>
+<div class="text-center">
+<img src="/imgs/plots/states_plus_disagreement_plus_historysize_by_history_conn0.2_var10_split.png" class="mx-auto" style="height:270px" />
 </div>
 
 <div class="grid grid-cols-2 gap-3 mt-1 text-xs leading-snug">
 <div>
 
-- ✅ swarm cleanly flips `Wait→Wander→Solve→Wait` per alarm — occupancy jumps to **1.0** (full consensus)
-- ⚔️ the concurrent attack at t=2400s correctly **preempts** `Wander`/`Solve` in favour of `Defend` (priority $\infty$)
+- swarm cleanly flips `Wait→Wander→Solve→Wait` per alarm — occupancy jumps to **1.0** (full consensus)
+- the concurrent attack at t=2400s correctly **preempts** `Wander`/`Solve` in favour of `Defend` (priority $\infty$)
 
 </div>
 <div>
 
-- 📉 disagreement spikes only **transiently** during transitions, then returns to 0
-- 💾 history size **stabilises** (bounded) rather than growing — practical history-independence confirmed
+- disagreement spikes only **transiently** during transitions, then returns to 0
+- history size **stabilises** (bounded) rather than growing — practical history-independence confirmed
 
 </div>
 </div>
+
+ <!-- ✅ --> 
+ <!-- ⚔️ -->
+ <!-- 📉 -->
+ <!-- 💾 --> 
 
 ---
 layout: default
@@ -459,13 +484,16 @@ layout: default
 <div class="grid grid-cols-2 gap-3 mt-1 text-xs leading-snug">
 <div>
 
-- 🔀 curves for $k=4$ (async) nearly **overlap** $k=10$ (near-sync): convergence is largely insensitive to timing variability
-- 📶 lower connectivity (R=75m, prev. slide) only widens the **transient**, doesn't break correctness
+<!-- 🔀 --> 
+<!-- 📶 --> 
+
+- curves for $k=4$ (async) nearly **overlap** $k=10$ (near-sync): convergence is largely insensitive to timing variability
+-lower connectivity (R=75m, prev. slide) only widens the **transient**, doesn't break correctness
 
 </div>
 <div>
 
-- 📈 same holds at 160 drones (not shown), with slightly **faster** convergence — target found sooner in a denser swarm
+- <!-- 📈 --> same holds at 160 drones (not shown), with slightly **faster** convergence — target found sooner in a denser swarm
 - ⇒ the cFSM mechanism scales without extra tuning
 
 </div>

@@ -16,11 +16,11 @@ const inf = ' / ∞'
 
 const edges: { id: string; d: string; label: Seg[]; lx: number; ly: number; rotate: number }[] = [
   { id: 'help', d: 'M195,230 L445,230', label: [{ t: `Help Asked${dash}` }, { t: 't', i: true }], lx: 320, ly: 208, rotate: 0 },
-  { id: 'solved-inner', d: 'M295,372 Q160,320 140,260', label: [{ t: `Solved${dash}` }, { t: 't', i: true }], lx: 250, ly: 305, rotate: -10 },
-  { id: 'solve-wait', d: 'M300,90 Q220,120 155,205', label: [{ t: `Solved${dash}` }, { t: 't', i: true }], lx: 224, ly: 128, rotate: -38 },
-  { id: 'wander-solve', d: 'M480,205 Q420,120 345,90', label: [{ t: `Found problem${dash}` }, { t: 't', i: true }], lx: 416, ly: 128, rotate: 40 },
-  { id: 'wait-defend', d: 'M150,255 Q220,340 300,375', label: [{ t: `Base Attacked${inf}` }], lx: 222, ly: 332, rotate: 39 },
-  { id: 'wander-defend', d: 'M490,255 Q420,340 345,375', label: [{ t: `Base Attacked${inf}` }], lx: 419, ly: 332, rotate: -39 },
+  { id: 'solved-inner', d: 'M295,372 Q160,320 140,260', label: [{ t: `Solved${dash}` }, { t: 't', i: true }], lx: 230, ly: 305, rotate: -10 },
+  { id: 'solve-wait', d: 'M300,90 Q220,120 155,205', label: [{ t: `Solved${dash}` }, { t: 't', i: true }], lx: 204, ly: 128, rotate: -38 },
+  { id: 'wander-solve', d: 'M480,205 Q420,120 365,100', label: [{ t: `Found problem${dash}` }, { t: 't', i: true }], lx: 456, ly: 138, rotate: 50 },
+  { id: 'wait-defend', d: 'M100,255 Q150,340 260,395', label: [{ t: `Base Attacked${inf}` }], lx: 145, ly: 342, rotate: 39 },
+  { id: 'wander-defend', d: 'M490,255 Q450,340 385,375', label: [{ t: `Base Attacked${inf}` }], lx: 490, ly: 332, rotate: -39 },
 ]
 </script>
 

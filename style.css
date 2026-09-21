@@ -13,3 +13,6 @@
      which font actually loads */
   text-shadow: 0.35px 0 currentColor, -0.35px 0 currentColor;
 }
+a {
+  color: #a00;
+}
