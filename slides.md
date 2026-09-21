@@ -30,10 +30,10 @@ mdc: true
 # Macroscopic Design of Swarms<br>with Collective State Machines
 
 <div class="mt-4 text-lg opacity-80">
-G. Aguzzi<sup>1</sup>, G. Audrito<sup>2</sup>, R. Girau<sup>1</sup>, G. Torta<sup>2</sup>, R. Casadei<sup>1</sup>
+G. Aguzzi<sup>1</sup>, G. Audrito<sup>2</sup>, R. Girau<sup>1</sup>, G. Torta<sup>2</sup>, <b>R. Casadei</b><sup>1</sup>
 </div>
 <div class="mt-2 text-sm opacity-60">
-<sup>1</sup> University of Bologna, Italy &nbsp;·&nbsp; <sup>2</sup> University of Turin, Italy
+<sup>1</sup> <b>University of Bologna, Italy</B> &nbsp;·&nbsp; <sup>2</sup> University of Turin, Italy
 </div>
 
 <div class="mt-8 text-sm opacity-50">
@@ -44,10 +44,91 @@ ICCCI 2026 — Computational Collective Intelligence
 layout: center
 ---
 
-# Why? &nbsp; Artificial collective intelligence
+# Context — macro-programming &amp; FoMaSE project
 
-Groups of situated agents (robot swarms, sensor networks) that must **solve problems together**, sensing and acting **locally** only.
+<!-- This work is carried out within **FoMaSE -- Foundations for Macro-programming-based Software Engineering** -->
 
+<!-- <v-clicks> -->
+
+- Project **FoMaSE -- Foundations for Macro-programming-based Software Engineering**
+  - FIS3 Starting Grant (Italian Science Fund) — PI **Roberto Casadei** (UNIBO), **1.1M€**, **2026–2031**
+  <!-- - Team: 1 Associate Prof., 4 post-docs, 2 PhDs
+  - Investigates the **micro–macro link** in **artificial collective intelligence**: how to engineer collective behaviour at the **macro level**
+  - Aims at **principled, predictable software engineering** for autonomous collectives (robot swarms, sensor networks, smart-city services, …)
+  -->
+  - Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)
+    - as a way to build **artificial collective intelligence** 
+    - and implications in software engineering / AI
+  - **<https://fis3-fomase.github.io>**
+
+<v-click>
+
+- Looking for collaborations!
+
+</v-click>
+
+<!-- </v-clicks> 
+
+<v-click>
+
+<div class="mt-6 p-3 rounded bg-blue-500/10 border border-blue-500/30">
+This talk presents <b>cFSM</b>, a FoMaSE contribution towards macro-programming <i>which collective task</i> a swarm is doing — <a href="https://fis3-fomase.github.io/">fis3-fomase.github.io</a>
+</div>
+
+</v-click>
+
+-->
+
+---
+layout: default
+---
+
+# Contribution at a glance
+
+<Quadrants :labels="['BACKGROUND', 'EXAMPLE', 'EXPERIMENTS', 'TAKEAWAYS']">
+
+<template #top-left>
+
+</template>
+
+<template #top-right>
+
+</template>
+
+<template #bottom-left>
+
+</template>
+
+<template #bottom-right>
+
+</template>
+
+</Quadrants>
+
+---
+layout: default
+---
+
+# Motivation: Macro-programming collectives
+
+<!-- Groups of situated agents (robot swarms, sensor networks) that must **solve problems together**, sensing and acting **locally** only -->
+
+<div class="text-sm leading-tight">
+
+* Positioning: programming language (PL) approaches to artificial collective intelligence (ACI)
+* Focus/goal: design and implement collective behaviour *at macro-level*
+* Case study: a **swarm** has to
+    * stay **idle** at the base
+    * when **alarm** event $\to$ **search-and-rescue** 
+    * when **attack** event $\to$ **defend** the base (higher priority)
+
+</div>
+
+<div style="height: 250px; display: flex; justify-content: center; overflow: hidden;">
+<CaseStudyScene style="height: 100%; width: auto;" />
+</div>
+
+<div class="text-sm">
 <v-clicks>
 
 - **Macro-programming** (e.g. *aggregate computing*) lets us program the *collective*, not each individual agent
@@ -55,10 +136,11 @@ Groups of situated agents (robot swarms, sensor networks) that must **solve prob
 - Missing: a principled way to make the **whole swarm** agree on *which collective task* it is doing, right now
 
 </v-clicks>
+</div>
 
 <v-click>
 
-<div class="mt-6 p-3 rounded bg-blue-500/10 border border-blue-500/30">
+<div class="mt-1 p-1 rounded bg-blue-500/10 border border-blue-500/30 text-sm">
 💡 <b>Idea</b>: lift FSMs to the collective level — <i>collective finite state machines</i> (cFSM), where <b>states = collective behaviours</b> and the network reaches <b>agreement</b> on state transitions.
 </div>
 

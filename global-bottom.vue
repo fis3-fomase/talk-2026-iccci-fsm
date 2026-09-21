@@ -1,14 +1,14 @@
 
 <script setup>
 
-const author = "Aguzzi, Audrito, Girau, Torta, Casadei"
+const author = "Aguzzi, Audrito, Girau, Torta, <u>Casadei</u>"
 const logoUrl = '/imgs/unibo.png'
 </script>
 
 <template>
     <div class="global-bottom" aria-hidden="true">
         <div class="global-bottom__inner">
-            <div class="author"><span class="authors">{{ author }}</span> - UNIBO / UNITO</div>
+            <div class="author"><span class="authors" v-html="author"></span> - UNIBO / UNITO</div>
             <div class="counter">{{ $slidev.nav.currentPage }} / {{ $slidev.nav.total }}</div>
         </div>
         <div class="logo-wrap">

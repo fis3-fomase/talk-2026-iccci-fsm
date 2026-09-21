@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { computed } from 'vue'
+
+const props = defineProps<{ compact?: boolean }>()
 
 // Grid: devices (rows) x rounds (columns)
 const DEVICES = 4
@@ -63,18 +65,10 @@ function reach(start: string, adj: Map<string, string[]>): Set<string> {
   return seen
 }
 
-// a few interesting reference events to cycle through
-const refs = ['1-2', '2-4', '1-5', '3-3']
-const refIndex = ref(0)
-const refId = computed(() => refs[refIndex.value % refs.length])
+// a fixed, illustrative reference event
+const refId = computed(() => '2-4')
 const past = computed(() => reach(refId.value, backward))
 const future = computed(() => reach(refId.value, forward))
-
-let timer: ReturnType<typeof setInterval> | undefined
-onMounted(() => {
-  timer = setInterval(() => { refIndex.value++ }, 2600)
-})
-onUnmounted(() => { if (timer) clearInterval(timer) })
 
 function classOf(id: string) {
   if (id === refId.value) return 'ref'
@@ -91,7 +85,7 @@ function edgeClass(e: Edge) {
 </script>
 
 <template>
-  <svg :viewBox="`0 0 ${W} ${H}`" class="event-structure">
+  <svg :viewBox="`0 0 ${W} ${H}`" :class="['event-structure', { compact }]">
     <text v-for="dvc in DEVICES" :key="'lbl' + dvc" :x="18" :y="marginY + (dvc - 1) * dy + 5" class="devlabel">δ{{ dvc }}</text>
     <text :x="marginX" :y="H - 8" class="axislabel">time →</text>
 
@@ -104,7 +98,7 @@ function edgeClass(e: Edge) {
       <circle :cx="n.x" :cy="n.y" :r="R" :class="['node', classOf(n.id)]" />
     </g>
   </svg>
-  <div class="legend">
+  <div v-if="!compact" class="legend">
     <span><i class="dot ref" /> reference event ε</span>
     <span><i class="dot past" /> causal past (&lt; ε)</span>
     <span><i class="dot future" /> causal future (ε &lt; ·)</span>
@@ -113,18 +107,18 @@ function edgeClass(e: Edge) {
 
 <style scoped>
 .event-structure { display: block; width: auto; height: 175px; max-width: 100%; margin: 0 auto; overflow: visible; }
+.event-structure.compact { width: 100%; height: auto; }
 .devlabel { font-size: 13px; fill: #6b7280; }
 .axislabel { font-size: 12px; fill: #6b7280; }
 .node {
   stroke: #94a3b8;
   stroke-width: 1.5;
   fill: #e5e7eb;
-  transition: fill 0.7s ease, stroke 0.7s ease, r 0.4s ease;
 }
 .node.ref { fill: #facc15; stroke: #ca8a04; r: 14; }
 .node.past { fill: #4ade80; stroke: #16a34a; }
 .node.future { fill: #60a5fa; stroke: #2563eb; }
-.edge { stroke: #cbd5e1; stroke-width: 1.5; transition: stroke 0.7s ease, stroke-width 0.7s ease; }
+.edge { stroke: #cbd5e1; stroke-width: 1.5; }
 .edge.lit { stroke: #94a3b8; stroke-width: 2.2; }
 .legend { display: flex; gap: 1.5em; justify-content: center; margin-top: 0.5em; font-size: 0.8em; color: #64748b; }
 .dot { display: inline-block; width: 0.8em; height: 0.8em; border-radius: 50%; margin-right: 0.35em; vertical-align: middle; }

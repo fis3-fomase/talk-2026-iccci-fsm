@@ -3,3 +3,13 @@
   visibility: hidden !important;
   pointer-events: none !important;
 }
+
+.slidev-layout strong,
+.slidev-layout b {
+  font-weight: 800;
+  /* the fallback sans-serif stack often only ships 400/700 faces, so requesting
+     800 silently clamps back to 700 (= no visible change); fake extra
+     thickness with a duplicated stroke so bold reads clearly regardless of
+     which font actually loads */
+  text-shadow: 0.35px 0 currentColor, -0.35px 0 currentColor;
+}
