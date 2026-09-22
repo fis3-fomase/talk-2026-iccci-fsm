@@ -565,10 +565,32 @@ layout: default
 # Conclusion
 
 - **cFSM**: a collective FSM design pattern: collective states + priority-based agreement on transitions
-- formalised over **augmented event structures**
-- implemented as a reusable layer on the **ScaFi** aggregate programming DSL
+- *formalised* over **augmented event structures**
+- *implemented* as a reusable layer on the **ScaFi aggregate programming DSL**
 - swarm case study: **correct**, **resilient** to async/conflicts, and **bounded memory** (cf. compressed histories) <!-- **history-independent** in practice (bounded memory) -->
 
+<div class="grid grid-cols-4 gap-3 mt-1 text-xs leading-snug">
+  <div>
+
+cFSM $\mathcal{M} = (Pr, S, (pr^\star, s^\star), P)$ 
+where $P$ is a macro-program + history ordering, extension, compression
+  
+  </div>
+  <div><CfsmDiagram style="width:100%;" /></div>
+  <div>
+    <div class="grid grid-cols-4 gap-3 mt-4">
+    <div class="text-center"><img src="/imgs/plots/waiting.png" class="rounded" /><div class="text-sm mt-1">🔴 <b>Wait</b> (base)</div></div>
+    <div class="text-center"><img src="/imgs/plots/wandering.png" class="rounded" /><div class="text-sm mt-1">🟠 <b>Wander</b> (search)</div></div>
+    <div class="text-center"><img src="/imgs/plots/solving.png" class="rounded" /><div class="text-sm mt-1">🟢 <b>Solve</b> (rescue target)</div></div>
+    <div class="text-center"><img src="/imgs/plots/defending.png" class="rounded" /><div class="text-sm mt-1">🟩 <b>Defend</b> (protect base)</div></div>
+    </div>
+  </div>
+  <div>
+    <div class="text-center">
+    <img src="/imgs/plots/states_plus_disagreement_plus_historysize_by_history_conn0.2_var10_split.png" />
+    </div>
+  </div>
+</div>
 
 <v-click>
 
@@ -576,7 +598,7 @@ layout: default
 
 - **parametric** states (carrying data, not just labels)
 - a catalogue of **priority-assignment patterns** (leader-based, timestamp-based, context/consensus-based)
-- integrating the **concurrency** dimension via aggregate processes
+- integrating the **concurrency** dimension via aggregate processes<Cite id="Audrito2024fgcs-processes" /><Cite id="DBLP:journals/eaai/CasadeiVAPD21" />
 
 </v-click>
 
