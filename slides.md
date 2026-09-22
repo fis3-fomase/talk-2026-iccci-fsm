@@ -57,8 +57,8 @@ Project **FoMaSE -- Foundations for Macro-programming-based Software Engineering
 - Investigates the **micro–macro link** in **artificial collective intelligence**: how to engineer collective behaviour at the **macro level**
 - Aims at **principled, predictable software engineering** for autonomous collectives (robot swarms, sensor networks, smart-city services, …)
 -->
-- Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)<CiteInSlide id="DBLP:journals/csur/Casadei23" />
-  - as a way to build **artificial collective intelligence**<CiteInSlide id="DBLP:journals/alife/Casadei23" />
+- Investigates **macro-level programming** (i.e. a program **targets an entire collective** of devices)
+  - as a way to build **artificial collective intelligence**
   <!-- - and implications in software engineering / AI -->
 - **<https://fis3-fomase.github.io>**
 
@@ -97,8 +97,8 @@ layout: default
 <!-- Groups of situated agents (robot swarms, sensor networks) that must **solve problems together**, sensing and acting **locally** only -->
 
 
-* Positioning: programming language (PL) approaches to artificial collective intelligence (ACI)
-* Focus/goal: design and implement collective behaviour *at macro-level*
+* Positioning: programming language (PL) approaches to artificial collective intelligence (ACI)<CiteInSlide id="DBLP:journals/alife/Casadei23" />
+* Focus/goal: design and implement collective behaviour *at macro-level*<CiteInSlide id="DBLP:journals/csur/Casadei23" />
 
 
 
@@ -238,7 +238,7 @@ A cFSM is a tuple $\mathcal{M} = (Pr, S, (pr^\star, s^\star), P)$:
 <v-clicks style="font-size: 80%;">
 
 - $Pr$: totally ordered **priorities**; $S$: totally ordered set of **collective states** (e.g. `Wander`, `Solve`, …); $(pr^\star, s^\star)$: the **initial** prioritised state
-- $P : S \to \mathbf{P}$: each state runs a **collective program**
+- $P : S \to \mathbf{P}$: each state runs an **collective program** (e.g., an aggregate program)
     - on every event, the program produces a new *prioritised state* $(pr', s') \in Pr \times S$
 
 </v-clicks>
@@ -250,12 +250,14 @@ A cFSM is a tuple $\mathcal{M} = (Pr, S, (pr^\star, s^\star), P)$:
 <div class="grid grid-cols-2 gap-4 items-center">
 <div>
 
-<b>Running example</b> — search &amp; rescue swarm: 
+<b>Running example</b> -- search &amp; rescue swarm: 
 
-$Pr = \mathbb{R}_\infty$ , $S = \{$<code>Wait</code>, <code>Wander</code>, <code>Solve</code>, <code>Defend</code>$\}$
-
- with <code>Wait</code> &lt; <code>Wander</code> &lt; <code>Solve</code> &lt; <code>Defend</code>, and $(pr^\star,s^\star) = (-\infty, \texttt{Wait})$
-
+- $Pr = \mathbb{R}_\infty$
+- $S = \{$<code>Wait</code>, <code>Wander</code>, <code>Solve</code>, <code>Defend</code>$\}$
+  - with <code>Wait</code> &lt; <code>Wander</code> &lt; <code>Solve</code> &lt; <code>Defend</code>
+- $(pr^\star,s^\star) = (-\infty, \texttt{Wait})$
+- P = assigns priorities as in the diagram on the right
+  - detailed later
 
 </div>
 <CfsmDiagram style="height:98%;" />
@@ -522,27 +524,39 @@ layout: default
 layout: default
 ---
 
-# Results — robustness to variability & scale
+# Results -- robustness to variability & scale
 
-<img src="/imgs/plots/states_comparison_conn0.2_by_variability_drones40.png" class="mx-auto" style="height:260px" />
+- Recall: Weibull shape parameter $k \in \{4,7,10\}$ models round-frequency variability 
+  - 4 (highly async), 7 (moderately async) , 10 (nearly-sync periodic execution)
+
+
 
 <div class="grid grid-cols-2 gap-3 mt-1 text-xs leading-snug">
 <div>
 
-<!-- 🔀 --> 
-<!-- 📶 --> 
+<img src="/imgs/plots/states_comparison_conn0.2_by_variability_drones40.png" class="mx-auto" style="width: 90%;" />
 
-- curves for $k=4$ (async) nearly **overlap** $k=10$ (near-sync): convergence is largely insensitive to timing variability
--lower connectivity (R=75m, prev. slide) only widens the **transient**, doesn't break correctness
 
 </div>
 <div>
 
-- <!-- 📈 --> same holds at 160 drones (not shown), with slightly **faster** convergence — target found sooner in a denser swarm
-- ⇒ the cFSM mechanism scales without extra tuning
+- curves for $k=4$ (async) nearly **overlap** $k=10$ (near-sync): **convergence largely insensitive to scheduling** <!-- timing variability -->
+- other experiments
+    - **lower connectivity** (R=75m vs. 100m) only widens the **transient**, doesn't break correctness
+    - **scalability: larger swarms** (160 vs. 40 drones) with slightly **faster** convergence (target found sooner in a denser swarm)
+
 
 </div>
 </div>
+
+
+
+
+<!-- - ⇒ the cFSM mechanism scales without extra tuning -->
+
+<!-- 🔀 --> 
+<!-- 📶 --> 
+
 
 ---
 layout: default
@@ -550,9 +564,10 @@ layout: default
 
 # Conclusion
 
-- **cFSM**: a collective FSM meta-model — collective states + priority-based agreement on transitions
-- formalised over **augmented event structures**, implemented as a reusable layer on **ScaFi** aggregate programs
-- swarm case study: **correct**, **resilient** to asynchrony/conflicts, and **history-independent** in practice (bounded memory)
+- **cFSM**: a collective FSM design pattern: collective states + priority-based agreement on transitions
+- formalised over **augmented event structures**
+- implemented as a reusable layer on the **ScaFi** aggregate programming DSL
+- swarm case study: **correct**, **resilient** to async/conflicts, and **bounded memory** (cf. compressed histories) <!-- **history-independent** in practice (bounded memory) -->
 
 
 <v-click>
