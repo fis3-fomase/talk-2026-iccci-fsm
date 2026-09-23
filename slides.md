@@ -97,7 +97,7 @@ layout: default
 <!-- Groups of situated agents (robot swarms, sensor networks) that must **solve problems together**, sensing and acting **locally** only -->
 
 
-* Positioning: programming language (PL) approaches to artificial collective intelligence (ACI)<CiteInSlide id="DBLP:journals/alife/Casadei23" />
+* Positioning: programming language (PL) approaches<CiteInSlide id="DBLP:journals/tosem/CasadeiAADPSTV25" /> to artificial collective intelligence (ACI)<CiteInSlide id="DBLP:journals/alife/Casadei23" />
 * Focus/goal: design and implement collective behaviour *at macro-level*<CiteInSlide id="DBLP:journals/csur/Casadei23" />
 
 
@@ -217,7 +217,7 @@ layout: default
 
 # Background -- Event structures
 
-The execution of an aggregate system can be modelled, in general, as an **augmented event structure**:<Cite id="Audrito2024fgcs-processes" />
+The execution of an aggregate system can be modelled, in general, as an **augmented event structure**:<CiteInSlide id="Audrito2024fgcs-processes" />
 
 $$
 \mathbf{E} = \langle E, \leadsto, d, s \rangle
@@ -557,7 +557,7 @@ layout: default
 
 <v-click>
 
-**Scenario dynamics**
+**Scenario dynamics** (through **injected events**)
 
 <!-- <div class="mt-4 text-sm opacity-70"> --> 
 
@@ -642,10 +642,15 @@ layout: default
 
 # Conclusion
 
+<v-clicks>
+
 - **cFSM**: a collective FSM design pattern: collective states + priority-based agreement on transitions
 - *formalised* over **augmented event structures**
 - *implemented* as a reusable layer on the **ScaFi aggregate programming DSL**
 - swarm case study: **correct**, **resilient** to async/conflicts, and **bounded memory** (cf. compressed histories) <!-- **history-independent** in practice (bounded memory) -->
+
+</v-clicks>
+
 
 <div class="grid grid-cols-4 gap-3 mt-1 text-xs leading-snug">
   <div>
