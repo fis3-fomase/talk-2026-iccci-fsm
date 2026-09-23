@@ -15,6 +15,8 @@ Learn more about Slidev at the [documentation](https://sli.dev/).
 
 - **slidev** is a slides maker and presenter designed for developers
     - **text-based** (Markdown), themable, dev-friendly (code-highlighting), interactive (embed Vue components), recoding/camera views, portable (e.g. pdf export, SPA), hackable 
+- Export: **`slidev export --with-clicks --output my.pdf`**
+    - install slidev globally: `npm i -g @slidev/cli`
 -  public slide show   > http://localhost:3030/
 -  presenter mode      > http://localhost:3030/presenter/
 -  slides overview     > http://localhost:3030/overview/
@@ -28,3 +30,7 @@ Learn more about Slidev at the [documentation](https://sli.dev/).
     - `<Tweet id="1390115..."/>, <BlueSky/>, <Youtube/>, <Counter :count="10" />`
 - Themes (specify in frontmatter `---` to `---`):
     : `theme: default`
+
+## These slides
+
+`slidev export --with-clicks --output talk-2026-iccci-fsm.pdf`

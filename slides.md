@@ -3,7 +3,7 @@
 theme: default
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-#background: /imgs/banner2026.png # https://cover.sli.dev
+# background image for all slides is set in style.css (.slidev-layout)
 # some information about your slides (markdown enabled)
 layout: cover
 title: "Macroscopic Design of Swarms with Collective State Machines"
@@ -163,12 +163,20 @@ AC is a **functional** macro-programming paradigm composing functions computing 
   <AggregateFlow />
 </div>
 
+<v-click>
+
 <div class="grid grid-cols-2 gap-6 mt-4">
 <div>
 
+<div class="mt-1 p-1 rounded bg-blue-500/10 border border-blue-500/30 text-sm" style="padding:0;margin:0;text-align:center;">
+
+"centralised program" but fully **decentralised** execution!
+
+</div>
+
 Each device runs **sense-compute-interact** rounds:
 
-<v-clicks>
+<v-clicks at="2">
 
 1. **Sense**: read sensors + non-expired msgs from neighbours
 2. **Compute**: evaluate the (same) aggregate program
@@ -176,14 +184,16 @@ Each device runs **sense-compute-interact** rounds:
 
 </v-clicks>
 
+
 </div>
 <div>
 
-  <LocalRoundLoop :click="$clicks" />
+  <LocalRoundLoop :click="$clicks - 1" />
 
 </div>
 </div>
 
+</v-click>
 
 <!--
 
@@ -219,12 +229,16 @@ $E$: events (sense-compute-interact rounds) &nbsp;·&nbsp; $\leadsto$: messaging
 
 </div>
 
-- transitive closure of $\leadsto$ gives a **causality** partial order $<$
-- each event has a finite **causal past** and (dynamically) a finite **causal future**
-
 <EventStructure class="mt-2" />
 
 <div class="text-xs text-center opacity-60 -mt-1">nodes = events of each device over time · edges = the messaging relation ⤳</div>
+
+<v-click>
+
+- transitive closure of $\leadsto$ gives a **causality** partial order $<$
+- each event has a finite **causal past** and (dynamically) a finite **causal future**
+
+</v-click>
 
 ---
 layout: default
@@ -252,15 +266,21 @@ A cFSM is a tuple $\mathcal{M} = (Pr, S, (pr^\star, s^\star), P)$:
 
 <b>Running example</b> -- search &amp; rescue swarm: 
 
+<v-clicks at="4">
+
 - $Pr = \mathbb{R}_\infty$
 - $S = \{$<code>Wait</code>, <code>Wander</code>, <code>Solve</code>, <code>Defend</code>$\}$
   - with <code>Wait</code> &lt; <code>Wander</code> &lt; <code>Solve</code> &lt; <code>Defend</code>
 - $(pr^\star,s^\star) = (-\infty, \texttt{Wait})$
-- P = assigns priorities as in the diagram on the right
+- P = the macro-program **dynamically** sets transitions/priorities 
   - detailed later
 
+</v-clicks>
+
 </div>
-<CfsmDiagram style="height:98%;" />
+<div v-click="5">
+<CfsmDiagram style="height:250px;" :initial="$clicks >= 6 ? 'Wait' : undefined" :show-edges="$clicks >= 7" />
+</div>
 </div>
 
 
@@ -293,11 +313,19 @@ A single "current state" per device isn't enough to guarantee convergence: we co
 
 $$h = [(pr_1,s_1), \dots, (pr_N, s_N)]$$
 
+<v-click>
+
+
 - **Extending** a history with a new proposal $(pr_{new}, s_{new})$: append it — unless the history already ends in a self-loop, in which case that trailing entry is *replaced*
 
 <div class="mt-4 text-sm opacity-70">
-⇒ self-loops don't make histories grow — length only grows with <i>actual</i> state changes.
+
+$\implies$ self-loops don't make histories grow (length only grows with <i>actual</i> state changes)
+
 </div>
+
+</v-click>
+
 
 <v-click>
 
@@ -383,6 +411,45 @@ Comparison pads the forgotten prefix with **wildcards** `(?,?,?)` — sequences 
 
 ---
 layout: default
+zoom: 0.95
+---
+
+# Merging compacted histories -- Example
+
+Histories are **aligned** (forgotten entries $\to$ `?`) and merged position by position; for each position we keep a known entry, the one with the **earliest** timestamp.
+
+<div class="text-sm" style="margin: 0; padding: 0; margin-top:-20px;">
+
+| | 1 | 2 | 3 | 4 |
+|---|---|---|---|---|
+| $ch_A$ ($N_F=2,\ N_K=2$) | `?` | `?` | $(100,\texttt{Solve},5)$ | $(10,\texttt{Wait},9)$ |
+| $ch_B$ ($N_F=1,\ N_K=2$) | `?` | $(10,\texttt{Wander},2)$ | $(100,\texttt{Solve},5)$ | `?` |
+| **max** ($N_F=1,\ N_K=3$) | `?` | $(10,\texttt{Wander},2)$ | $(100,\texttt{Solve},5)$ | $(10,\texttt{Wait},9)$ |
+
+</div>
+
+<div class="text-sm opacity-80 -mt-2">
+
+$ch_A$ and $ch_B$ are <b>compatible</b> (they agree wherever both are known) → the merge fills gaps from both: <code>Wait</code> comes from A, while <code>Wander</code> is kept because B hasn't forgotten it yet.
+The merge can thus have a larger $N_K$ than its inputs: it shrinks again when the history is extended and entries older than $\Delta T$ are pruned (keeping ≥ 2).
+
+</div>
+
+<v-click>
+
+<div class="mt-3 p-3 rounded bg-amber-500/10 border border-amber-500/30 text-sm" style="padding-top: 0; padding-bottom: 0;">
+
+Now neighbour $ch_C$ ($N_F=1,\ N_K=2$) arrives: &nbsp; `?` , $(10,\texttt{Wander},2)$ , $(\infty,\texttt{Defend},7)$
+
+- **incompatible** with A and B at position 3: $(\infty,\texttt{Defend}) > (100,\texttt{Solve})$
+- A and B are **discarded** $\Rightarrow$ max $= ch_C$ &nbsp;→ everyone switches to <code>Defend</code>
+
+</div>
+
+</v-click>
+
+---
+layout: default
 ---
 
 # Case study -- Search & rescue swarm
@@ -394,7 +461,7 @@ A swarm of drones patrols a base, searching for a target when an alarm is raised
 
 - 4 collective states: `Wait`, `Wander`, `Solve`, `Defend`
 - standard transitions: priority $-t$ &nbsp;(favour **earlier** proposals)
-- attack → `Defend`: priority $\infty$ &nbsp;(**preempts** any other task, from any state)
+- attack $\to$ `Defend`: priority $\infty$ &nbsp;(**preempts** any other task, from any state)
 
 </div>
 <CfsmDiagram />
@@ -409,7 +476,7 @@ Code, data & analysis scripts: <a href="https://github.com/cric96/experiments-20
 layout: default
 ---
 
-# Case study — ScaFi implementation
+# Case study -- ScaFi implementation
 
 The `cfsm` combinator gives a reusable FSM-like structure: state ↦ (movement logic, transition rule)
 
@@ -439,17 +506,19 @@ private def handleDefend(base: Point3D): Next[MovementState] =
 layout: default
 ---
 
-# Case study — swarm snapshots
+# Case study -- swarm snapshots
 
 <div class="grid grid-cols-4 gap-3 mt-4">
+<v-clicks>
 <div class="text-center"><img src="/imgs/plots/waiting.png" class="rounded" /><div class="text-sm mt-1">🔴 <b>Wait</b> (base)</div></div>
 <div class="text-center"><img src="/imgs/plots/wandering.png" class="rounded" /><div class="text-sm mt-1">🟠 <b>Wander</b> (search)</div></div>
 <div class="text-center"><img src="/imgs/plots/solving.png" class="rounded" /><div class="text-sm mt-1">🟢 <b>Solve</b> (rescue target)</div></div>
 <div class="text-center"><img src="/imgs/plots/defending.png" class="rounded" /><div class="text-sm mt-1">🟩 <b>Defend</b> (protect base)</div></div>
+</v-clicks>
 </div>
 
 <div class="mt-6 text-sm opacity-70">
-Simulated in <b>Alchemist</b> with <b>ScaFi</b> + <b>MacroSwarm</b>: 40–160 drones, 500×500 m area, 100 m sensing range.
+Simulated in <b>Alchemist</b> with <b>ScaFi</b> + <b>MacroSwarm</b>: 40-160 drones, 500×500 m area, 70-100m sensing range.
 </div>
 
 ---
@@ -458,9 +527,12 @@ layout: default
 
 # Evaluation setup
 
-**Goals**: (i) *correctness* — does the swarm converge to the right state? (ii) *resilience* — under asynchrony & conflicting proposals? (iii) *practical history-independence* — bounded memory?
+**Goals**: (i) *correctness* -- does the swarm converge to the right state? (ii) *resilience* -- under asynchrony & conflicting proposals? (iii) *practical history-independence* -- bounded memory?
+
+
 
 <div class="grid grid-cols-2 gap-6 mt-2">
+<v-click>
 <div>
 
 **Metrics** (tracked over time):
@@ -469,6 +541,8 @@ layout: default
 - **history size**: avg. kept entries $N_K$
 
 </div>
+</v-click>
+<v-click>
 <div>
 
 **Varied parameters** (128 runs × 4000s each):
@@ -478,14 +552,18 @@ layout: default
 - round-frequency variability $k \in \{4,7,10\}$
 
 </div>
+</v-click>
 </div>
 
+<v-click>
 
 **Scenario dynamics**
 
 <!-- <div class="mt-4 text-sm opacity-70"> --> 
 
 - 3 alarms (t=1100,2300,3500s) + 1 base attack (t=2400s, deliberately overlapping the 2nd mission) to stress-test priority-based conflict resolution
+
+</v-click>
 
 ---
 layout: default

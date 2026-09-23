@@ -21,3 +21,11 @@ a {
   color: #a00;
   opacity: 1;
 }
+/* UniBo watermark on every slide, whatever the layout. Anchored bottom-right
+   so the seal in the corner survives the 16:9 crop of the A4-ratio image. */
+.slidev-layout {
+  background-image: url("/imgs/unibo.png");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: cover;
+}

@@ -2,6 +2,10 @@
 // Static reproduction of Fig. 3(a) in the paper (state machine diagram
 // for the synthetic search-and-rescue case study). No animation/highlighting:
 // all states and transitions are always shown, exactly as in the figure.
+// Pass `:show-edges="false"` to render only the states (no arrows/labels),
+// and `initial="Wait"` to mark a state as initial (bolder border).
+
+withDefaults(defineProps<{ showEdges?: boolean; initial?: string }>(), { showEdges: true })
 
 const pos = {
   Wait: { x: 130, y: 230 },
@@ -35,15 +39,17 @@ const edges: { id: string; d: string; label: Seg[]; lx: number; ly: number; rota
       </filter>
     </defs>
 
-    <g v-for="e in edges" :key="e.id">
-      <path :d="e.d" fill="none" class="edge" marker-end="url(#arrow)" />
-      <text :x="e.lx" :y="e.ly" class="elabel" :transform="`rotate(${e.rotate} ${e.lx} ${e.ly})`">
-        <tspan v-for="(s, i) in e.label" :key="i" :font-style="s.i ? 'italic' : 'normal'">{{ s.t }}</tspan>
-      </text>
-    </g>
+    <template v-if="showEdges">
+      <g v-for="e in edges" :key="e.id">
+        <path :d="e.d" fill="none" class="edge" marker-end="url(#arrow)" />
+        <text :x="e.lx" :y="e.ly" class="elabel" :transform="`rotate(${e.rotate} ${e.lx} ${e.ly})`">
+          <tspan v-for="(s, i) in e.label" :key="i" :font-style="s.i ? 'italic' : 'normal'">{{ s.t }}</tspan>
+        </text>
+      </g>
+    </template>
 
     <g v-for="(p, name) in pos" :key="name">
-      <rect :x="p.x - 62" :y="p.y - 26" width="124" height="52" rx="26" class="state" filter="url(#nodeShadow)" />
+      <rect :x="p.x - 62" :y="p.y - 26" width="124" height="52" rx="26" class="state" :class="{ initial: name === initial }" filter="url(#nodeShadow)" />
       <text :x="p.x" :y="p.y + 7" class="slabel">{{ name }}</text>
     </g>
   </svg>
@@ -53,6 +59,7 @@ const edges: { id: string; d: string; label: Seg[]; lx: number; ly: number; rota
 .cfsm { width: 100%; height: auto; overflow: visible; }
 
 .state { fill: white; stroke: #1a1a1a; stroke-width: 2; }
+.state.initial { stroke-width: 5; }
 .slabel { text-anchor: middle; font-size: 22px; font-weight: 700; fill: #1a1a1a; font-family: Arial, Helvetica, sans-serif; }
 
 .edge { stroke: #1a1a1a; stroke-width: 1.75; }
