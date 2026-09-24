@@ -352,7 +352,7 @@ At every event $\epsilon$, a device computes:
 
 <v-clicks>
 
-- **input history** = the **maximum** history among its neighbours' latest outputs
+- **input history** = the **maximum** history among its neighbours' latest outputs (including itself)
 - **active state** = last state of the input history
 - **output history** = input history **extended** with $P(\text{active state})$'s proposal
 
@@ -560,7 +560,7 @@ layout: default
 
 <!-- <div class="mt-4 text-sm opacity-70"> --> 
 
-- 3 alarms (t=1100,2300,3500s) + 1 base attack (t=2400s, deliberately overlapping the 2nd mission) to stress-test priority-based conflict resolution
+- 3 alarms i.e. mission requests (t=1100,2300,3500s) + 1 base attack (t=2400s, deliberately overlapping the 2nd mission) to stress-test priority-based conflict resolution
 
 </v-click>
 
