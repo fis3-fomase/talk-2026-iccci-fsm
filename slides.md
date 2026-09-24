@@ -329,13 +329,13 @@ $\implies$ self-loops don't make histories grow (length only grows with <i>actua
 
 <v-click>
 
-<div class="mt-4 p-3 rounded bg-amber-500/10 border border-amber-500/30 text-sm">
+<div class="mt-4 p-3 rounded bg-amber-500/10 border border-amber-500/30 text-sm" style="margin-top: -15px;">
 
 Drone <b>R</b> goes <code>Wait</code> $\to$ <code>Wander</code> (pr 10) $\to$ <code>Solve</code> (pr 100) $\to$ <code>Wait</code> (pr 10):
 
 $$h = [(-\infty,\texttt{Wait}),\ (10,\texttt{Wander}),\ (100,\texttt{Solve}),\ (10,\texttt{Wait})]$$
 
-(any self-loops while wandering/solving are absorbed, not shown)
+* (any self-loops while wandering/solving are absorbed, not shown)
 </div>
 
 </v-click>
@@ -430,8 +430,7 @@ Histories are **aligned** (forgotten entries $\to$ `?`) and merged position by p
 
 <div class="text-sm opacity-80 -mt-2">
 
-$ch_A$ and $ch_B$ are <b>compatible</b> (they agree wherever both are known) → the merge fills gaps from both: <code>Wait</code> comes from A, while <code>Wander</code> is kept because B hasn't forgotten it yet.
-The merge can thus have a larger $N_K$ than its inputs: it shrinks again when the history is extended and entries older than $\Delta T$ are pruned (keeping ≥ 2).
+$ch_A$ and $ch_B$ are <b>compatible</b> <!-- (they agree wherever both are known) --> &nbsp; $\to$ &nbsp;  the merge fills gaps from both<!-- >: <code>Wait</code> comes from A, while <code>Wander</code> is kept because B hasn't forgotten it yet. The merge can thus have a larger $N_K$ than its inputs: it shrinks again when the history is extended and entries older than $\Delta T$ are pruned (keeping ≥ 2). -->
 
 </div>
 
@@ -510,10 +509,10 @@ layout: default
 
 <div class="grid grid-cols-4 gap-3 mt-4">
 <v-clicks>
-<div class="text-center"><img src="/imgs/plots/waiting.png" class="rounded" /><div class="text-sm mt-1">🔴 <b>Wait</b> (base)</div></div>
+<div class="text-center"><img src="/imgs/plots/waiting.png" class="rounded" style="width: 55%;" /><div class="text-sm mt-1">🔴 <b>Wait</b> (base)</div></div>
+<div class="text-center"><img src="/imgs/plots/defending.png" class="rounded" style="width: 55%;" /><div class="text-sm mt-1">🟩 <b>Defend</b> (protect base)</div></div>
 <div class="text-center"><img src="/imgs/plots/wandering.png" class="rounded" /><div class="text-sm mt-1">🟠 <b>Wander</b> (search)</div></div>
 <div class="text-center"><img src="/imgs/plots/solving.png" class="rounded" /><div class="text-sm mt-1">🟢 <b>Solve</b> (rescue target)</div></div>
-<div class="text-center"><img src="/imgs/plots/defending.png" class="rounded" /><div class="text-sm mt-1">🟩 <b>Defend</b> (protect base)</div></div>
 </v-clicks>
 </div>
 
@@ -527,7 +526,7 @@ layout: default
 
 # Evaluation setup
 
-**Goals**: (i) *correctness* -- does the swarm converge to the right state? (ii) *resilience* -- under asynchrony & conflicting proposals? (iii) *practical history-independence* -- bounded memory?
+**Goals**: (i) **_correctness_** -- does the swarm converge to the right state? (ii) **_resilience_** -- under asynchrony & conflicting proposals? (iii) **_bounded memory_** (practical history independence)
 
 
 
